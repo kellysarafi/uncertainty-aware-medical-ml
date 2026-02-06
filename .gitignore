@@ -205,3 +205,12 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Project artifacts (generated)
+data/*.keras
+
+# Jupyter checkpoints (folder form)
+.ipynb_checkpoints/
+
+# Optional: keep notebooks output light (if you want later)
+# notebooks/.ipynb_checkpoints/
