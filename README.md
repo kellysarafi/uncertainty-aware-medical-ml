@@ -65,6 +65,35 @@ This confirms that uncertainty estimation does **not degrade predictive performa
 
 ---
 
+## Method Comparison
+
+| Aspect                  | Baseline CNN | MC Dropout |
+|-------------------------|--------------|------------|
+| Predictive accuracy     | ✔️           | ✔️ |
+| Uncertainty estimation  | ❌           | ✔️ |
+| Predictive entropy      | ❌           | ✔️ |
+| Selective prediction    | ❌           | ✔️ |
+| Calibration analysis    | ❌           | ✔️ |
+| Deployment complexity   | Low          | Low |
+
+MC Dropout provides **substantially richer information** with minimal architectural or computational overhead compared to a deterministic model.
+
+---
+
+## Results Summary
+
+| Method                  | Test Accuracy | Macro F1 | Calibration (ECE) | Notes |
+|-------------------------|---------------|----------|-------------------|-------|
+| Baseline CNN            | ~0.74         | ~0.41    | Not evaluated     | Deterministic softmax |
+| MC Dropout (mean, T=30) | ~0.74         | ~0.41    | ~0.01             | Uncertainty-aware |
+
+**Key observations:**
+- MC Dropout preserves predictive accuracy
+- Uncertainty estimation does not degrade performance
+- Calibration improves when using MC-averaged probabilities
+
+---
+
 ## Uncertainty Analysis
 
 ### Confidence vs Correctness
@@ -119,6 +148,22 @@ This aligns uncertainty estimates with intuitive visual difficulty.
 - Predictive entropy separates correct and incorrect predictions
 - Selective prediction significantly improves reliability
 - Confidence estimates are well calibrated
+
+---
+
+## Why This Matters in Medical AI
+
+In medical applications, incorrect predictions are not equally costly.
+A confident but wrong prediction can be far more dangerous than an uncertain one.
+
+Uncertainty-aware models enable:
+- Deferral of ambiguous cases to human experts
+- Safer deployment in real clinical workflows
+- Risk-aware decision support instead of blind automation
+
+This project demonstrates how uncertainty estimation can be integrated into a standard CNN with minimal changes, while significantly improving interpretability and reliability.
+
+Rather than replacing clinicians, uncertainty-aware systems are designed to **support decision-making under uncertainty**, which is a key requirement for trustworthy medical AI.
 
 ---
 
