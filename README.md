@@ -1,4 +1,3 @@
-# uncertainty-aware-medical-ml
 # Uncertainty-Aware Medical Image Classification
 
 This project explores **predictive uncertainty estimation** in medical image classification using a convolutional neural network (CNN).  
