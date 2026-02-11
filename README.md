@@ -1,25 +1,29 @@
 # Uncertainty-Aware Medical Image Classification
 
-This project explores **predictive uncertainty estimation** in medical image classification using a convolutional neural network (CNN).  
-Rather than focusing on accuracy alone, the project analyzes **model confidence, calibration, and selective prediction behavior**, which are critical for safety-critical domains such as healthcare.
+## TL;DR
 
-The repository presents a **frozen baseline version (v1)** comparing:
-- A deterministic CNN
-- Monte Carlo (MC) Dropout inference for uncertainty estimation
+- Trained a CNN on DermMNIST (7-class medical image classification)
+- Implemented **Monte Carlo Dropout** for uncertainty-aware inference
+- Showed uncertainty correlates with prediction errors
+- Demonstrated **selective prediction** improves accuracy to >92% at 50% coverage
+- Verified **calibration** using reliability diagrams (ECE ≈ 0.01)
+
+This project focuses on reliability and interpretability rather than maximizing accuracy.
 
 ---
-
-## Motivation
+## Overview
 
 Deep learning models often produce confident predictions even when they are wrong.  
 In medical settings, this behavior is risky.
+This repository demonstrates how predictive uncertainty can be integrated into a standard convolutional neural network for medical image classification.
 
-This project demonstrates how **uncertainty-aware inference** can:
-- Identify unreliable predictions
-- Improve decision safety via selective prediction
-- Provide calibrated confidence estimates
+Instead of optimizing only for accuracy, the project evaluates:
+- Confidence quality
+- Calibration
+- Error–uncertainty correlation
+- Selective prediction behavior
 
-The implementation is intentionally kept **clear and reproducible**, rather than overly complex.
+The objective is to illustrate how uncertainty-aware inference improves reliability in safety-critical domains such as healthcare.
 
 ---
 
@@ -31,7 +35,7 @@ The implementation is intentionally kept **clear and reproducible**, rather than
 - Standard train / validation / test split
 
 ---
-
+# Methodology
 ## Baseline Model
 
 A convolutional neural network is trained using:
@@ -87,26 +91,29 @@ MC Dropout provides **substantially richer information** with minimal architectu
 | Baseline CNN            | ~0.74         | ~0.41    | Not evaluated     | Deterministic softmax |
 | MC Dropout (mean, T=30) | ~0.74         | ~0.41    | ~0.01             | Uncertainty-aware |
 
-**Key observations:**
+Key observations:
 - MC Dropout preserves predictive accuracy
 - Uncertainty estimation does not degrade performance
 - Calibration improves when using MC-averaged probabilities
 
 ---
 
-## Uncertainty Analysis
+## Detailed Findings 
 
-### Confidence vs Correctness
-Correct predictions tend to exhibit **higher confidence**, while incorrect predictions are concentrated at lower confidence values.
+### Predictive Performance 
+- Baseline test accuracy: ~0.74
+- MC Dropout mean accuracy: ~0.74
 
-### Predictive Entropy
-Incorrect predictions show **significantly higher entropy**, indicating increased epistemic uncertainty.
+Uncertainty estimation preserves classification performance.
 
-This separation demonstrates that uncertainty correlates with model error.
+### Error–Uncertainty Relationship
 
----
+- Incorrect predictions exhibit lower confidence
+- Predictive entropy is significantly higher for misclassified samples
 
-## Selective Prediction
+This confirms that uncertainty estimates meaningfully correlate with model errors.
+
+### Selective Prediction
 
 Predictions are selectively accepted based on uncertainty.
 
@@ -119,9 +126,8 @@ At **50% coverage**:
 
 This shows how uncertainty can be used to **trade coverage for accuracy**.
 
----
 
-## Calibration
+### Calibration
 
 A reliability diagram is computed using MC Dropout mean confidence.
 
@@ -132,7 +138,7 @@ This indicates **well-calibrated confidence estimates**, which is essential for 
 
 ---
 
-## Qualitative Results
+### Qualitative Results
 
 Visual inspection of samples shows:
 - **Low-entropy predictions** correspond to clear, unambiguous lesions
